@@ -69,10 +69,11 @@ const addTodo = () => {
           <label>
             <input type="checkbox" v-model="todo.done" />
             <span :class="`bubble ${todo.category}`"></span>
-            <div class="todo-content">
-              <input type="text" v-model="todo.content"/>
-            </div>
           </label>
+
+          <div class="todo-content">
+              <input type="text" v-model="todo.content"/>
+          </div>
 
         </div>
 
