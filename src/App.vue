@@ -1,5 +1,5 @@
 <script setup>
-import {ref, transformVNodeArgs} from 'vue'
+import {ref, onMounted, watch} from 'vue'
 const todos = ref([])
 const name = ref('')
 const input_content = ref('')
@@ -25,6 +25,22 @@ const addTodo = () => {
 const removeTodo = (todo) =>{
   todos.value = todos.value.filter(t => t !== todo)
 }
+
+onMounted(() => {
+  name.value = localStorage.getItem('name') || ''
+  todos.value = JSON.parse(localStorage.getItem('todos')) || []
+})
+
+watch(name, (newVal) => {
+  localStorage.setItem('name', newVal)
+
+})
+
+watch(todos, (newVal) => {
+  localStorage.setItem('todos', JSON.stringify(newVal))
+}, {deep: true})
+
+
 
 </script>
 
@@ -68,7 +84,7 @@ const removeTodo = (todo) =>{
 
     <section class="todo-list">
       <div class="list">
-        <div v-for="todo in todos" :class="`todo-item ${todo.done ? 'done' : 'not-done'}`" :key="todo" >
+        <div v-for="todo in todos.slice().reverse()" :class="`todo-item ${todo.done ? 'done' : 'not-done'}`" :key="todo" >
 
           <label>
             <input type="checkbox" v-model="todo.done" />
